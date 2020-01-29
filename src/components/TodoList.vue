@@ -6,13 +6,13 @@
   <div v-if="displayAll">Alle werden angezeigt</div>
   <div v-if="!displayAll">Offene werden angezeigt</div>
       <v-list >
-        <v-list-item v-for="item in getTodos" :key="item.id">
-          <todo-list-item :item = "item"/>
+        <v-list-item v-for="todo in getTodos" :key="todo.id">
+          <todo-list-item :todo = "todo"/>
         </v-list-item>
       </v-list>
 </div>
 
-    <div><v-switch v-model=displayAll></v-switch> Alle Anzeigen </div>
+    <div><v-switch v-model="displayAll" :label="displayAll ? 'Nur offene Todo anzeigen' : 'Alle Todo Anzeigen'"></v-switch></div>
      
 
     </v-layout>
@@ -21,33 +21,41 @@
 
 <script>
 import TodoListItem from './TodoListItem';
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: 'TodoList',
 
   components: {
+    
     TodoListItem,
   },
 
   data: () => ({
-   displayAll: false,
 
-   todos: [
-   { id: 1, title: "Um 17 Uhr gehen", subtitle: "dringend", checked: true},
-   { id: 2, title: "Um 9 Uhr gehen", subtitle: "dringend", checked: false},
-   { id: 3, title: "Um 99 Uhr gehen", subtitle: "dringend", checked: false}
-    ]
   }),
 
   computed: {
-    getTodos() {
-      if ( this.displayAll) {
-        return this.todos;
-
-      } else {
-        return this.todos.filter( item => !item.checked)
-      }
+    displayAll: {
+    get() {
+      return this.$store.state.displayAll;
+    },
+    set(value) {
+      this.$store.commit("setDisplayAll", value);
     }
+    },
+...mapGetters({
+        todos: "getAllTodos",
+        doneTodos: "getDoneTodos",
+    }),
+    getTodos() {
+      return this.displayAll ? this.todos : this.doneTodos;
+    }
+  
+  },
+  methods: {
+    ...mapActions(["toggleDisplayAll"])
   }
 
 };
