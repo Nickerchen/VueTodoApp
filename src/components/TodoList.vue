@@ -3,6 +3,8 @@
     <v-layout text-center wrap>
 
 <div class="todo-list">
+  <div v-if="displayAll">Alle werden angezeigt</div>
+  <div v-if="!displayAll">Offene werden angezeigt</div>
       <v-list >
         <v-list-item v-for="item in getTodos" :key="item.id">
           <todo-list-item :item = "item"/>

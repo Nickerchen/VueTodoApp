@@ -5,26 +5,25 @@
       color="primary"
       dark
     >
-  Todo Demo Vue App
-      <v-spacer></v-spacer>
+    <v-btn to="/">Start</v-btn>
+    <v-btn to="/todos">Todos</v-btn>
+       Todo Demo Vue App
     </v-app-bar>
 
     <v-content>
-      <TodoSearch/>
-      <TodoList/>
-      <TodoForm/>
+
+      
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import TodoList from './components/TodoList';
 
 export default {
   name: 'App',
 
   components: {
-    TodoList,
   },
 
   data: () => ({
